@@ -5,7 +5,6 @@ import Example from "../components/example";
 export const commonRoutes = [
     {
         path: '/',
-        component: Main
-
+        component: Example
     }
 ]
