@@ -1,8 +1,8 @@
 import React from "react";
 import {Router} from "@reach/router";
-import {commonRoutes} from "./routes";
+import {commonRoutes} from "./src/routes/routes";
 
-const AppRouter = () => {
+const App = () => {
     return(
         <Router>
             {
@@ -15,4 +15,4 @@ const AppRouter = () => {
     )
 }
 
-export default AppRouter;
+export default App;

@@ -1,7 +1,7 @@
 import React from "react";
 const Main = () => {
     return(
-        <div className={'p-10'}>
+        <div className={'p-20'}>
             haha
         </div>
     )
