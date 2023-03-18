@@ -2,7 +2,7 @@ import React from "react";
 import {Router} from "@reach/router";
 import {commonRoutes} from "./routes";
 
-const App = () => {
+const AppRouter = () => {
     return(
         <Router>
             {
@@ -15,4 +15,4 @@ const App = () => {
     )
 }
 
-export default App;
+export default AppRouter;
