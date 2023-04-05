@@ -1,0 +1,20 @@
+.background {
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(45deg, rgb(26, 1, 117) 0%, rgba(225, 5, 34, 0) 70%) repeat scroll 0% 0%,
+  linear-gradient(135deg, rgb(2, 10, 16) 10%, rgba(49, 5, 209, 0) 80%) repeat scroll 0% 0%,
+  linear-gradient(225deg, hsl(102, 100%, 21%) 10%, rgba(10, 219, 216, 0) 80%) repeat scroll 0% 0%,
+  rgba(0, 0, 0, 0) linear-gradient(315deg, rgb(91, 75, 22) 100%, rgba(9, 245, 5, 0) 70%) repeat scroll 0% 0%;
+}
+
+/* Other page styling */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.form{
+  @apply flex flex-col bg-gray-300 text-zinc-300 bg-opacity-30 rounded-2xl px-12;
+}

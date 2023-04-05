@@ -1,0 +1,57 @@
+.app-input {
+	@apply flex appearance-none justify-center items-center px-1 py-0 w-full bg-white outline-none;
+	font-size: 16px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	border: 1px solid #ced4da;
+	height: 40px;
+	transition: box-shadow 0.1s ease-in-out;
+
+	&.textarea {
+		height: 200px;
+	}
+
+	&:focus {
+		border-color: #9b9b9b;
+	}
+
+	&.error {
+		border-width: 1px 1px 1px 5px;
+		border-style: solid;
+		border-color: $error;
+		border-image: initial;
+	}
+
+	&.app-input-small {
+		height: 32px;
+	}
+
+	&:disabled {
+		@apply cursor-not-allowed bg-gray-300;
+	}
+}
+
+.app-input-label {
+	@apply font-bold;
+	font-size: 16px;
+	&.error {
+		color: $error;
+	}
+}
+
+.app-input-message {
+	@apply flex;
+	font-size: 10px;
+}
+
+.app-input-error-message {
+	@apply flex;
+	font-size: 10px;
+	color: $error;
+}
+
+.app-input-success-message {
+	@apply flex;
+	font-size: 10px;
+	color: $success;
+}
