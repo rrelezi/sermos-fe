@@ -10,9 +10,9 @@ interface IMessage {
 const Messages: IMessage = {
   required: "is required",
   minLength: "should be least {{minLength}} characters",
-  min: "should be greater than or equal to {{data-wg-min}}",
-  max: "should be less than or equal to {{data-wg-max}}",
-  maxLength: "must not be longer than {{ttgMaxLength}} characters",
+  min: "should be greater than or equal to {{data-min}}",
+  max: "should be less than or equal to {{data-max}}",
+  maxLength: "must not be longer than {{maxLength}} characters",
   pattern: "should be a valid {{name}}",
 };
 

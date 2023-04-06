@@ -20,7 +20,7 @@ const AppLabel = ({
   }
   return (
     <div className={`app-input-label ${hasError ? "error" : ""}`}>
-      <div className={"flex flex-1 flex-row"}>
+      <div className={"flex flex-1 flex-row pb-2"}>
         {label}
         {!!labelTooltip && (
           <AppTooltip
@@ -33,6 +33,7 @@ const AppLabel = ({
             <AppIcon icon={labelIcon} />
           </AppTooltip>
         )}
+        { !!labelIcon && <AppIcon icon={labelIcon} className={'px-2'}/>}
       </div>
     </div>
   );

@@ -1,21 +1,19 @@
 import React from "react";
 import AppIcon from "./AppIcon";
-import AppRIIcon from "./AppRIIcon";
 
 interface IAppButton {
   text?: string;
-  remixIcon?: boolean;
   icon?: string;
   iconClass?: string;
   loading?: boolean;
   className?: string;
   disabled?: boolean;
   onClick?: any;
+  type?: any;
 }
 
 const AppButton = ({
   text,
-  remixIcon = false,
   icon,
   iconClass,
   loading = false,
@@ -41,12 +39,7 @@ const AppButton = ({
     >
       <div className={"relative"}>
         <span className={loading ? "invisible" : "visible"}>{text}</span>
-        {icon &&
-          (remixIcon ? (
-            <AppRIIcon icon={icon} className={iconClass} />
-          ) : (
-            <AppIcon icon={icon} className={iconClass} />
-          ))}
+        {icon && <AppIcon icon={icon} className={iconClass} />}
         {loading && (
           <p className="absolute top-0 left-0 right-0 bottom-0">
             <AppIcon icon={"loading"} className={"animate-spin"} />

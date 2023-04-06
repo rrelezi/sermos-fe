@@ -18,7 +18,7 @@
 	&.error {
 		border-width: 1px 1px 1px 5px;
 		border-style: solid;
-		border-color: $error;
+		border-color: #a40000;
 		border-image: initial;
 	}
 
@@ -35,7 +35,7 @@
 	@apply font-bold;
 	font-size: 16px;
 	&.error {
-		color: $error;
+		color: #a40000;
 	}
 }
 
@@ -47,11 +47,11 @@
 .app-input-error-message {
 	@apply flex;
 	font-size: 10px;
-	color: $error;
+	color: #a40000;
 }
 
 .app-input-success-message {
 	@apply flex;
 	font-size: 10px;
-	color: $success;
+	color: #0db00d;
 }

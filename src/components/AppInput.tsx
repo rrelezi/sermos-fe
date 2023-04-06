@@ -16,6 +16,7 @@ interface IAppInput {
   disabled?: boolean;
   onChange: any;
   type?: string;
+  maxLength?: number;
 }
 
 const AppInput = React.forwardRef(

@@ -7,7 +7,7 @@ interface IAppIcon {
 const AppIcon = ({ icon, className, ...props }: IAppIcon) => {
   return (
     <span
-      className={`app-icon icon-${icon} ${className ? className : ""} `}
+      className={` ${icon} ${className ? className : ""} `}
       {...props}
     />
   );

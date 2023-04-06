@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import AppRouter from "./routes/AppRouter";
 import './styles/index.css';
 import './styles/appIndex.css';
+import 'remixicon/fonts/remixicon.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
