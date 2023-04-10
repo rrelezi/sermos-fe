@@ -8,14 +8,11 @@ const prepareCustomer = (user: any) => {
 };
 
 export const login =
-    ({ email, password } : {email: string, password: string}) =>
-        async (dispatch: any) => {
-    console.log('test')
-            return new Promise((resolve, reject) => {
+    ({ email, password } : {email: string, password: string}) => (
+        new Promise((resolve, reject) => {
                 ApiService.post('/login', { email, password })
                     .then((response) => {
-                        console.log('test')
-                        const { token, user } = response.data;
+                        const { token } = response.data;
                         //dispatch(setCustomerData(prepareCustomer(user))); set customer data
                         setAuthCookie(token);
                         resolve(response.data);
@@ -25,8 +22,8 @@ export const login =
                         setAuthCookie('');
                         reject(error);
                     });
-            });
-        };
+            }
+        ))
 
 export const getCustomerData =
     () =>
@@ -87,28 +84,23 @@ export const update = (payload: any) => {
     });
 };
 
-export const forgotPassword = ({ email, token } : {email: string; token: string;}) => {
+export const forgotPassword = ({ email} : {email: string;}) => {
     return new Promise((resolve, reject) => {
-        ApiService.post(`/user/forgot_password`, { email, token }).then(resolve, reject);
+        ApiService.post(`/forget`, { email}).then(resolve, reject);
     });
 };
 
 export const resetPassword =
-    ({ token, password, new_password } : {token : string; password : string; new_password : string;}) =>
-        async (dispatch: any) => {
-            return new Promise((resolve, reject) => {
-                ApiService.post(`/user/reset_password`, { token, password, new_password })
+    ({ token, password, new_password } : {token : string; password : string; new_password : string;}) => (
+             new Promise((resolve, reject) => {
+                ApiService.post(`/resetPassword`, { token, password, new_password })
                     .then((response) => {
-                        const { token, customer } = response.data;
                       //  dispatch(setCustomerData(prepareCustomer(customer)));
-                        setAuthCookie(token);
-                        resolve(response.data);
                     })
                     .catch((error) => {
                         reject(error);
                     });
-            });
-        };
+            }))
 
 export const updatePassword = (payload: any) => {
     return new Promise((resolve, reject) => {
@@ -134,18 +126,24 @@ export const verifyLink = (token: string) => {
     });
 };
 
+export const confirmPassword = (token: string) => {
+    return new Promise((resolve, reject) => {
+        ApiService.get(`/verify?token=${token}`)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
 
 
-
-const register = (payload: any, dispatch: any) => {
+const register = (payload: any) => {
     return new Promise((resolve, reject) => {
         ApiService.post(`/register`, payload)
-            .then((response) => {
-                const { token, customer } = response.data;
-                //dispatch(setCustomerData(prepareCustomer(customer))); to do
-               // dispatch(getNotifications()); to do
-                setAuthCookie(token);
-                resolve(response.data);
+            .then(()=>{
+              console.log('register test')
             })
             .catch((error) => {
                 reject(error);
@@ -164,5 +162,6 @@ export default {
     resetPassword,
     updatePassword,
     verifyLink,
+    confirmPassword,
     register
 };

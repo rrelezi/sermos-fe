@@ -1,14 +1,17 @@
-import Example from "../components/Home/example";
-import Login from "../components/User/login";
+const names = {
+    Login: `/login`,
+    RegisterEmailVerification: `/user/register_confirm`,
+    ForgotPassword: `/user/forget`,
+    ResetPassword: `/user/reset`,
+    Register: '/register',
+};
 
+export const PublicRouteNames = [
+    names.Login,
+    names.ForgotPassword,
+    names.ResetPassword,
+    names.Register,
+    names.RegisterEmailVerification
+];
 
-export const commonRoutes = [
-    {
-        path: '/',
-        component: Example
-    },
-    {
-        path: '/login',
-        component: Login
-    }
-]
+export default names;

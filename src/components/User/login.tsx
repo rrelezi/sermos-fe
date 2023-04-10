@@ -5,6 +5,7 @@ import AppButton from "../AppButton";
 import UserService from "../../services/UserService";
 import {useState} from "react";
 import {emailRegex, passwordRegex} from "../../services/UtilityService";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
   const {
@@ -15,19 +16,33 @@ const Login = () => {
   } = useForm();
 
   const [loading,setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const login = (payload: any) => {
+    UserService.login(payload)
+        .then(()=>{
+      console.log('then test')
+    })
+        .catch((e)=>{
+          console.log('error test');
+        })
+  }
 
   const submit = (payload: any) => {
     setLoading(true);
-    UserService.login(payload);
+    login(payload);
     reset();
     setLoading(false);
   }
 
   return (
     <div className={"background"}>
-      <div className={'header'}>Sermos</div>
-      <form className={"relative top-1/4 w-10/12 md:w-9/12 max-w-2xl mx-auto"}
+      <div className={'header'}>Sermo</div>
+      <form className={"relative w-10/12 md:w-9/12 max-w-2xl mx-auto"}
             onSubmit={handleSubmit(submit)}
+            style={{
+              top: '15vh'
+            }}
       >
         <div className={"form py-10 w-full"}>
           <div className={'py-1 text-xl md:text-2xl font-semibold font-mono'}>Login</div>
@@ -62,17 +77,25 @@ const Login = () => {
             errors={errors}
             maxLength={30}
           />
+          <div className={'flex justify-end'}>
+            <div className={'register-link font-mono'}
+                 onClick={() => navigate('/user/forget',{ replace : true })}
+            >Forgot password?</div>
+          </div>
+
 
           <div className={'pt-5'}>
             <AppButton type={'submit font-mono'}
                        text={"Login"}
-                       className={'login-button'}
                        loading={loading}
+                       icon={'ri-login-circle-line'}
             />
           </div>
 
-          <div className={'flex justify-end pt-3'}>
-            <div className={'register-link font-mono'}>Click here to register</div>
+          <div className={'flex justify-start pt-5'}>
+            <div className={'register-link font-mono'}
+                 onClick={() => navigate('/register',{ replace : true })}
+            >Click here to register</div>
           </div>
         </div>
       </form>

@@ -21,11 +21,12 @@
 }
 
 .header{
-  @apply relative top-36 text-center text-xl md:text-2xl font-semibold font-mono;
+  @apply relative text-center text-xl md:text-2xl font-semibold font-mono;
+  top: 10vh;
 }
 
 .login-button{
-  @apply flex justify-center text-2xl w-40 p-2 mx-auto rounded-bl-lg shadow;
+  @apply flex justify-center text-2xl w-56 p-2 mx-auto rounded-bl-lg shadow;
   @apply hover:shadow-gray-700 hover:saturate-150 hover:backdrop-blur-md hover:text-gray-700;
 
   background: linear-gradient(45deg, rgb(255, 255, 255) 0%, rgba(225, 5, 34, 0) 26%) repeat scroll 0 0,

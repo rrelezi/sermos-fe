@@ -24,10 +24,11 @@ const onUnauthorizedResponse = (error: any) => {
 };
 
 const ApiService = Axios.create({
-    baseURL: 'localhost:3000/',
+    baseURL: 'http://127.0.0.1:8000/api',
     headers: {
         'Content-Type': 'application/json',
     },
+
 });
 
 ApiService.interceptors.request.use(

@@ -44,7 +44,7 @@ export const serializeQueryString = function (obj: any, prefix: any) {
 export const getAuthCookie = () => {
     const token = Cookies.get('Cookie');
     if (token && token !== 'undefined') {
-        return token;
+        return `Bearer ${token}`;
     }
     return null;
 };

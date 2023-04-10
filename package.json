@@ -17,13 +17,16 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
+    "react-hot-toast": "^2.4.0",
     "react-image-file-resizer": "^0.4.8",
+    "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "remixicon": "^3.0.0",
     "sass": "^1.60.0",
     "swiper": "^9.2.0",
     "typescript": "^5.0.3",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
