@@ -3,7 +3,7 @@ import AppInput from "../AppInput";
 import { useForm } from "react-hook-form";
 import AppButton from "../AppButton";
 import UserService from "../../services/UserService";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
 
@@ -16,7 +16,25 @@ const Login = () => {
   } = useForm();
 
   const [loading,setLoading] = useState(false);
+  const [googleAuthUrl,setUrl] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/auth/google', {
+      headers : {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('Something went wrong!');
+        })
+        .then((data) => setUrl( data.url ))
+        .catch((error) => console.error(error));
+  }, []);
 
   const login = (payload: any) => {
     UserService.login(payload)
@@ -90,6 +108,13 @@ const Login = () => {
                        loading={loading}
                        icon={'ri-login-circle-line'}
             />
+          </div>
+          <div className={'pt-5'}>
+            <div>
+              {googleAuthUrl != null && (
+                  <a href={googleAuthUrl}>Google Sign In</a>
+              )}
+            </div>
           </div>
 
           <div className={'flex justify-start pt-5'}>

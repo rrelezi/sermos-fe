@@ -4,6 +4,7 @@ const names = {
     ForgotPassword: `/user/forget`,
     ResetPassword: `/user/reset`,
     Register: '/register',
+    GoogleAuth: '/auth/google'
 };
 
 export const PublicRouteNames = [
@@ -11,7 +12,8 @@ export const PublicRouteNames = [
     names.ForgotPassword,
     names.ResetPassword,
     names.Register,
-    names.RegisterEmailVerification
+    names.RegisterEmailVerification,
+    names.GoogleAuth
 ];
 
 export default names;
