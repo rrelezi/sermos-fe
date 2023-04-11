@@ -7,6 +7,7 @@ import {useState} from "react";
 import {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
+import Message from "./Message";
 
 const Register = () => {
     const {
@@ -18,22 +19,26 @@ const Register = () => {
     } = useForm();
 
     const [loading,setLoading] = useState(false);
+    const [completed,setCompleted] = useState(false);
+
     const navigate = useNavigate();
 
     const registerUser = (payload: any) => {
+        setLoading(true);
         UserService.register(payload)
             .then(()=>{
+                setCompleted(true);
                 toast.success('An email was send to confirm your account')
             })
             .catch((e)=>{
                 toast.error(e.message)
             })
+            .finally(() => setLoading(false))
     }
 
     const checkConfirmPassword = (password:  string, confirmedPassword: string) => (password === confirmedPassword);
 
     const submit = (payload: any) => {
-        setLoading(true);
         if(checkConfirmPassword(payload.password,payload.confirmPassword)){
             registerUser({
                 name: payload.name,
@@ -44,8 +49,10 @@ const Register = () => {
         }else{
             setError('confirmPassword',{ type: 'validate', message: 'Passwords do not match.' })
         }
-        setLoading(false);
     }
+
+    if(completed)
+        return <Message message={'A link was sent to your email for account verification.'}/>
 
     return (
         <div className={"background"}>

@@ -6,6 +6,7 @@ import UserService from "../../services/UserService";
 import {useState} from "react";
 import {emailRegex} from "../../services/UtilityService";
 import toast from "react-hot-toast";
+import Message from "./Message";
 
 const ForgotPassword = () => {
     const {
@@ -16,23 +17,30 @@ const ForgotPassword = () => {
     } = useForm();
 
     const [loading,setLoading] = useState(false);
+    const [completed,setCompleted] = useState(false);
 
     const forget = (payload: any) => {
+        setLoading(true);
         UserService.forgotPassword(payload)
             .then(()=>{
+                setCompleted(true);
                 toast.success('An email was sent to reset password')
             })
             .catch((e)=>{
                 toast.error(e.message)
             })
+            .finally(()=>setLoading(false))
     }
 
     const submit = (payload: any) => {
-        setLoading(true);
         forget(payload);
         reset();
-        setLoading(false);
     }
+
+    console.log(loading);
+
+    if(completed)
+        return <Message message={'An email was sent with the link to reset your password'} showLogin={false} />
 
     return (
         <div className={"background"}>

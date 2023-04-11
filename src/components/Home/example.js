@@ -114,7 +114,6 @@ export default function Example() {
                     </Dialog>
                 </Transition.Root>
                 <ChatScreen/>
-
             </div>
         </>
     )

@@ -27,20 +27,22 @@ const Login = () => {
   }, []);
 
   const login = (payload: any) => {
+    setLoading(true);
     UserService.login(payload)
         .then(()=>{
         toast.success('Login was successful')
+          navigate('/main/home')
     })
         .catch((e)=>{
           toast.error(e.message)
         })
+        .finally(()=>  setLoading(false))
   }
 
   const submit = (payload: any) => {
-    setLoading(true);
+
     login(payload);
     reset();
-    setLoading(false);
   }
 
   return (

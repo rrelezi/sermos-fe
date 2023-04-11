@@ -6,6 +6,7 @@ import UserService from "../../services/UserService";
 import {useState} from "react";
 import {getQueryParams, passwordRegex} from "../../services/UtilityService";
 import toast from "react-hot-toast";
+import Message from "./Message";
 
 const ResetPassword = () => {
     const {
@@ -17,22 +18,26 @@ const ResetPassword = () => {
     } = useForm();
 
     const [loading,setLoading] = useState(false);
+    const [completed,setCompleted] = useState(false);
+
     const params = getQueryParams(decodeURI(window.location.href));
 
     const checkConfirmPassword = (password:  string, confirmedPassword: string) => (password === confirmedPassword);
 
     const resetPassword = (payload: any) => {
+        setLoading(true);
         UserService.resetPassword(payload)
             .then(()=>{
-               toast.success('Password reset was successful')
+                setCompleted(true);
+                toast.success('Password reset was successful')
             })
             .catch((e)=>{
                 toast.error(e.message)
             })
+            .finally(() =>  setLoading(false))
     }
 
     const submit = (payload: any) => {
-        setLoading(true);
         if(checkConfirmPassword(payload.password,payload.confirmPassword)){
             resetPassword({
                 token: params.token,
@@ -43,8 +48,10 @@ const ResetPassword = () => {
         }else{
             setError('confirmPassword',{ type: 'validate', message: 'Passwords do not match.' })
         }
-        setLoading(false);
     }
+
+    if(completed)
+        return <Message message={'Password reset was successful.'}/>
 
     return (
         <div className={"background"}>

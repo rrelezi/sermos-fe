@@ -90,17 +90,11 @@ export const forgotPassword = ({ email} : {email: string;}) => {
     });
 };
 
-export const resetPassword =
-    ({ token, password, new_password } : {token : string; password : string; new_password : string;}) => (
-             new Promise((resolve, reject) => {
-                ApiService.post(`/resetPassword`, { token, password, new_password })
-                    .then((response) => {
-                      //  dispatch(setCustomerData(prepareCustomer(customer)));
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            }))
+export const resetPassword = (
+    {token, newPassword, confirmPassword} : { token : string; newPassword : string; confirmPassword : string;}) =>
+         ApiService.post(`/resetPassword`, { token, newPassword, confirmPassword })
+             .then((response) => response.data)
+
 
 export const updatePassword = (payload: any) => {
     return new Promise((resolve, reject) => {

@@ -17,7 +17,7 @@ const AppButton = ({
   icon,
   iconClass,
   loading = false,
-  className = "btn btn-primary login-button",
+  className = `btn btn-primary ${loading ? 'login-button-disabled' : 'login-button'}`,
   ...props
 }: IAppButton) => {
   const _onClick = (e: any) => {
@@ -39,10 +39,10 @@ const AppButton = ({
     >
       <div className={"relative"}>
         <span className={loading ? "invisible" : "visible"}>{text}</span>
-        {icon && <AppIcon icon={icon} className={iconClass} />}
+        {icon && !loading && <AppIcon icon={icon} className={iconClass} />}
         {loading && (
-          <p className="absolute top-0 left-0 right-0 bottom-0">
-            <AppIcon icon={"loading"} className={"animate-spin"} />
+          <p className="absolute top-0 left-0 right-0 bottom-0 animate-spin">
+            <AppIcon icon={"ri-loader-2-fill"} className={'flex justify-center'} scale={1.4}/>
           </p>
         )}
       </div>

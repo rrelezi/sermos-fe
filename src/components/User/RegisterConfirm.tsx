@@ -1,11 +1,10 @@
 import * as React from "react";
 import {getQueryParams} from "../../services/UtilityService";
 import {useEffect, useState} from "react";
-import AppIcon from "../AppIcon";
-import AppButton from "../AppButton";
 import UserService from "../../services/UserService";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
+import Message from "./Message";
 
 const RegisterConfirm = () => {
     const navigate = useNavigate();
@@ -32,20 +31,9 @@ const RegisterConfirm = () => {
 
     return (
         <div className={"background"}>
-            {
-                confirmed &&
-                <div className={'flex flex-col items-center text-xl pt-20'}>
-                    Account confirmed successfully!
-                    <AppIcon
-                        icon={'ri-checkbox-circle-line'}
-                    />
-                    <AppButton
-                        text={'Login'}
-                        className={'login-button text-base mx-auto'}
-                    />
-                </div>
+            {   confirmed &&
+                <Message icon={'checkbox-circle-line'}  message={' Account confirmed successfully!'} />
             }
-
         </div>
     );
 };
