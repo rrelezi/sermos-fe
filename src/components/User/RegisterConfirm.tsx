@@ -39,7 +39,7 @@ const RegisterConfirm = () => {
                     />
                     <AppButton
                         text={'Login'}
-                        className={'w-56 login-button text-base'}
+                        className={'login-button text-base mx-auto'}
                     />
                 </div>
             }

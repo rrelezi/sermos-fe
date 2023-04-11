@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import AppInput from "../AppInput";
 import { useForm } from "react-hook-form";
 import AppButton from "../AppButton";
@@ -6,6 +6,7 @@ import UserService from "../../services/UserService";
 import {useEffect, useState} from "react";
 import {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -16,33 +17,22 @@ const Login = () => {
   } = useForm();
 
   const [loading,setLoading] = useState(false);
-  const [googleAuthUrl,setUrl] = useState(null);
+  const [googleAuthUrl,setGoogleAuthUrl] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/auth/google', {
-      headers : {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error('Something went wrong!');
-        })
-        .then((data) => setUrl( data.url ))
+    UserService.getGoogleAuth()
+        .then((response)=> setGoogleAuthUrl(response.url))
         .catch((error) => console.error(error));
   }, []);
 
   const login = (payload: any) => {
     UserService.login(payload)
         .then(()=>{
-      console.log('then test')
+        toast.success('Login was successful')
     })
         .catch((e)=>{
-          console.log('error test');
+          toast.error(e)
         })
   }
 
@@ -63,8 +53,10 @@ const Login = () => {
             }}
       >
         <div className={"form py-10 w-full"}>
+
           <div className={'py-1 text-xl md:text-2xl font-semibold font-mono'}>Login</div>
           <div className={'pb-7 text-md md:text-lg font-mono'}>Please login to your account</div>
+
           <AppInput
             {...register("email", {
               required: true,
@@ -79,6 +71,7 @@ const Login = () => {
             errors={errors}
             maxLength={40}
           />
+
           <AppInput
             {...register("password", {
               required: true,
@@ -95,29 +88,27 @@ const Login = () => {
             errors={errors}
             maxLength={30}
           />
+
           <div className={'flex justify-end'}>
             <div className={'register-link font-mono'}
-                 onClick={() => navigate('/user/forget',{ replace : true })}
+                 onClick={() => navigate('/user/forget')}
             >Forgot password?</div>
           </div>
 
 
-          <div className={'pt-5'}>
+          <div className={'flex flex-row justify-end py-2 pr-5'}>
             <AppButton type={'submit font-mono'}
                        text={"Login"}
                        loading={loading}
                        icon={'ri-login-circle-line'}
+                       iconClass={'pl-2'}
             />
-          </div>
-          <div className={'pt-5'}>
-            <div>
-              {googleAuthUrl != null && (
-                  <a href={googleAuthUrl}>Google Sign In</a>
-              )}
-            </div>
+            {googleAuthUrl && (
+                <a className={'register-link font-mono text-base pl-2 pt-2'} href={googleAuthUrl}>or sign in with google</a>
+            )}
           </div>
 
-          <div className={'flex justify-start pt-5'}>
+          <div className={'flex justify-between pt-3'}>
             <div className={'register-link font-mono'}
                  onClick={() => navigate('/register',{ replace : true })}
             >Click here to register</div>

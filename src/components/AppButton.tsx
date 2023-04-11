@@ -17,7 +17,7 @@ const AppButton = ({
   icon,
   iconClass,
   loading = false,
-  className = "btn btn-primary",
+  className = "btn btn-primary login-button",
   ...props
 }: IAppButton) => {
   const _onClick = (e: any) => {

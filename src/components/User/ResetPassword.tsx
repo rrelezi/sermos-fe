@@ -90,7 +90,7 @@ const ResetPassword = () => {
                         <AppButton type={'submit font-mono'}
                                    text={"Reset password"}
                                    loading={loading}
-                                   className={'login-button'}
+                                   className={'login-button mx-auto'}
                                    icon={'ri-login-circle-line'}
                         />
                     </div>

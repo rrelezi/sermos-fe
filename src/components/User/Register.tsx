@@ -112,14 +112,14 @@ const Register = () => {
                     <div className={'pt-5'}>
                         <AppButton type={'submit font-mono'}
                                    text={"Register"}
-                                   className={'login-button'}
+                                   className={'login-button mx-auto'}
                                    loading={loading}
                         />
                     </div>
 
                     <div className={'flex justify-end pt-3'}>
                         <div className={'register-link font-mono'}
-                             onClick={()=> navigate('/login', { replace : true })}
+                             onClick={()=> navigate('/login')}
                         >Alreadey registered? Click here to login.</div>
                     </div>
                 </div>

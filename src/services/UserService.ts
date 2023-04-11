@@ -139,7 +139,7 @@ export const confirmPassword = (token: string) => {
 };
 
 
-const register = (payload: any) => {
+export const register = (payload: any) => {
     return new Promise((resolve, reject) => {
         ApiService.post(`/register`, payload)
             .then(()=>{
@@ -150,6 +150,13 @@ const register = (payload: any) => {
             });
     });
 };
+
+export const getGoogleAuth = () =>
+    ApiService.get(`/auth/google`).then((response)=> response.data)
+
+export const googleAuth = (search: string) =>
+    ApiService.get(`/auth/googleCallback${search}`).then((response)=> response.data)
+
 
 
 export default {
@@ -163,5 +170,7 @@ export default {
     updatePassword,
     verifyLink,
     confirmPassword,
-    register
+    register,
+    getGoogleAuth,
+    googleAuth
 };
