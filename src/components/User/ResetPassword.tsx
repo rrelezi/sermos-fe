@@ -2,10 +2,10 @@ import * as React from "react";
 import AppInput from "../AppInput";
 import { useForm } from "react-hook-form";
 import AppButton from "../AppButton";
-import UserService, {forgotPassword} from "../../services/UserService";
+import UserService from "../../services/UserService";
 import {useState} from "react";
-import {emailRegex, getQueryParams, passwordRegex} from "../../services/UtilityService";
-import {useNavigate} from "react-router-dom";
+import {getQueryParams, passwordRegex} from "../../services/UtilityService";
+import toast from "react-hot-toast";
 
 const ResetPassword = () => {
     const {
@@ -18,17 +18,16 @@ const ResetPassword = () => {
 
     const [loading,setLoading] = useState(false);
     const params = getQueryParams(decodeURI(window.location.href));
-    const navigate = useNavigate();
 
     const checkConfirmPassword = (password:  string, confirmedPassword: string) => (password === confirmedPassword);
 
     const resetPassword = (payload: any) => {
         UserService.resetPassword(payload)
             .then(()=>{
-                console.log('then test')
+               toast.success('Password reset was successful')
             })
             .catch((e)=>{
-                console.log('error test');
+                toast.error(e.message)
             })
     }
 

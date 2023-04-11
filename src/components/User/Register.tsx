@@ -6,6 +6,7 @@ import UserService from "../../services/UserService";
 import {useState} from "react";
 import {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Register = () => {
     const {
@@ -22,10 +23,10 @@ const Register = () => {
     const registerUser = (payload: any) => {
         UserService.register(payload)
             .then(()=>{
-                console.log('then test')
+                toast.success('An email was send to confirm your account')
             })
             .catch((e)=>{
-                console.log('error test');
+                toast.error(e.message)
             })
     }
 

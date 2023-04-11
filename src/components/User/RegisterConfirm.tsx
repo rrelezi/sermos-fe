@@ -5,6 +5,7 @@ import AppIcon from "../AppIcon";
 import AppButton from "../AppButton";
 import UserService from "../../services/UserService";
 import {useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const RegisterConfirm = () => {
     const navigate = useNavigate();
@@ -16,10 +17,11 @@ const RegisterConfirm = () => {
     const confirmRegister = (token: string) => {
         UserService.confirmPassword(token)
             .then(()=>{
+                toast.success('Account created successfully!')
                 setConfirmed(true);
             })
-            .catch(()=>{
-                console.log('error')
+            .catch((e)=>{
+                toast.error(e.message)
                 navigate('/login', {replace : true})
             })
     }

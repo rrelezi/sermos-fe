@@ -2,10 +2,10 @@ import * as React from "react";
 import AppInput from "../AppInput";
 import { useForm } from "react-hook-form";
 import AppButton from "../AppButton";
-import UserService, {forgotPassword} from "../../services/UserService";
+import UserService from "../../services/UserService";
 import {useState} from "react";
-import {emailRegex, passwordRegex} from "../../services/UtilityService";
-import {useNavigate} from "react-router-dom";
+import {emailRegex} from "../../services/UtilityService";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
     const {
@@ -16,15 +16,14 @@ const ForgotPassword = () => {
     } = useForm();
 
     const [loading,setLoading] = useState(false);
-    const navigate = useNavigate();
 
     const forget = (payload: any) => {
         UserService.forgotPassword(payload)
             .then(()=>{
-                console.log('then test')
+                toast.success('An email was sent to reset password')
             })
             .catch((e)=>{
-                console.log('error test');
+                toast.error(e.message)
             })
     }
 
