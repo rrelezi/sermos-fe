@@ -1,5 +1,6 @@
 import ApiService from './ApiService';
 import UtilityService, { setAuthCookie } from './UtilityService';
+import axios from "axios";
 
 const prepareCustomer = (user: any) => {
     const data = {};
@@ -148,8 +149,22 @@ export const register = (payload: any) => {
 export const getGoogleAuth = () =>
     ApiService.get(`/auth/google`).then((response)=> response.data)
 
-export const googleAuth = (search: string) =>
-    ApiService.get(`/auth/googleCallback${search}`).then((response)=> response.data)
+export const googleAuth = (code: string|null) => {
+    axios.post('https://oauth2.googleapis.com/token', {
+        code: code,
+        client_id: '227682060456-083qepr3gge7332bn82isrjkno04riur.apps.googleusercontent.com',
+        client_secret: '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',
+        redirect_uri: 'http://localhost:3000/auth/google',
+        grant_type: 'authorization_code'
+    }).then(response => {
+        const token = response.data.id_token;
+        return ApiService.get(`/auth/googleCallback?token=${token}`).then((response)=> response.data.token);
+    }).catch(error => {
+        console.error(error);
+    });
+
+}
+
 
 
 

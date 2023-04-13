@@ -3,11 +3,12 @@ import {useLocation} from "react-router-dom";
 import UserService from "../../services/UserService";
 
 const GoogleLogin = () => {
-    const location = useLocation();
+
+    const code = new URLSearchParams(window.location.search).get('code');
 
     useEffect(() => {
-        UserService.googleAuth(location.search)
-            .then((response) => response.json())
+        const token = UserService.googleAuth(code);
+        console.log(token);
     }, []);
 }
 
