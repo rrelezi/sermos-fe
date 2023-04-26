@@ -27,6 +27,7 @@ const Register = () => {
         setLoading(true);
         UserService.register(payload)
             .then(()=>{
+                console.log('test');
                 setCompleted(true);
                 toast.success('An email was send to confirm your account')
             })

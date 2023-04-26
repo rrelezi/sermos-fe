@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import AppButton from "../AppButton";
 import UserService from "../../services/UserService";
 import {useEffect, useState} from "react";
-import {emailRegex, passwordRegex} from "../../services/UtilityService";
+import UtilityService, {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
+import {RouteNames} from "../../routes/routes";
 
 const Login = () => {
   const {
@@ -19,8 +20,11 @@ const Login = () => {
   const [loading,setLoading] = useState(false);
   const [googleAuthUrl,setGoogleAuthUrl] = useState(null);
   const navigate = useNavigate();
+  const loggedIn = !!UtilityService.getAuthCookie();
 
   useEffect(() => {
+    if(loggedIn) navigate(RouteNames.Home, {replace: true})
+
     UserService.getGoogleAuth()
         .then((response)=> setGoogleAuthUrl(response.url))
         .catch((error) => console.error(error));
@@ -36,11 +40,10 @@ const Login = () => {
         .catch((e)=>{
           toast.error(e.message)
         })
-        .finally(()=>  setLoading(false))
+        .finally(() =>  setLoading(false))
   }
 
   const submit = (payload: any) => {
-
     login(payload);
     reset();
   }
