@@ -1,0 +1,18 @@
+
+.dash-panel {
+  @apply flex flex-col h-full border-r-2 border-gray-400 rounded-r-md p-2 pr-4 mr-5;
+  min-width: 300px;
+  width: 35%;
+}
+
+.app-layout{
+  @apply flex bg-gray-200 shadow-2xl border-black;
+  position: absolute;
+  width: 90vw;
+  height: 90vh;
+  padding: 15px;
+  top: 5%;
+  left: 5%;
+  border: 1px solid;
+  border-radius: 0.8rem;
+}
