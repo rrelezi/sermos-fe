@@ -63,7 +63,6 @@ export const logout = () => {
   return new Promise((resolve, reject) => {
     ApiService.post(`/logout`)
       .then(() => {
-        //navigate(`/login?logout=true`);
         setTimeout(() => {
           setAuthCookie("");
           // dispatch(setCustomerData({}));
