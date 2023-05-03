@@ -1,14 +1,45 @@
 import React, { useRef } from "react";
-import { getQueryParams } from "../../services/UtilityService";
+import {emailRegex, getQueryParams} from "../../services/UtilityService";
 import { useLocation, useNavigate } from "react-router-dom";
 import {Input, MessageList} from "react-chat-elements";
 import AppIcon from "../AppIcon";
 import AppButton from "../AppButton";
+import {useForm} from "react-hook-form";
+import AppInput from "../AppInput";
+import {useSelector} from "react-redux";
+import ChatService, { pusher } from '../../services/ChatService';
 
 const ChatScreen = () => {
+    const { id } = useSelector(state => state.profile);
+    const channel = pusher.subscribe(`sermo.${id}`);
+    channel.bind('addMessage', (data) => {
+        console.log(data)
+    } )
+
+    console.log(id);
+
+    //console.log(channel);
+
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset
+    } = useForm();
+
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = getQueryParams(decodeURI(location.pathname));
+
+  const sendMessage = (e) => {
+      console.log(e.message)
+      ChatService.sendMessage({
+          id:id,
+          friendId: id === 1? 2 : 1,
+          text: e.message
+      })
+      console.log(e);
+  }
 
   return (
     <div className={"flex flex-col justify-between rounded bg-gray-400 p-5 w-full h-full"}>
@@ -34,7 +65,7 @@ const ChatScreen = () => {
                 replyButton: true,
                 forwarded: true,
                 retracted: false,
-                notch: false,
+                notch: true,
                 type: "text",
                 title: "user2",
                 text: "Give me a message list example !",
@@ -58,12 +89,22 @@ const ChatScreen = () => {
         ]}
     />
 
-    <Input
-        className={'border-2 rounded-md border-black mt-2'}
-        placeholder="Type here..."
-        multiline={true}
-        rightButtons={<AppIcon icon={'ri-send-plane-2-fill'} className={'px-2 font-medium cursor-pointer w-18'} scale={1.2} />}
-    />
+    <form onSubmit={handleSubmit(sendMessage)}>
+        <div className={'flex flex-row'}>
+            <AppInput
+                {...register('message')}
+                className={"rounded-b-md font-mono"}
+                containerClassName={'w-full mb-0 mt-3 mr-2'}
+                labelIcon={"ri-user-line"}
+                errors={errors}
+                maxLength={256}
+                placeholder={'Type here...'}
+            />
+            <AppButton type='submit' className={'w-3/12 mt-3 h-10 bg-gray-300 rounded-b-md'} text={'Send -->'} />
+        </div>
+
+    </form>
+
 </div>
 
     </div>

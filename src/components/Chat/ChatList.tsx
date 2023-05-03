@@ -17,9 +17,9 @@ const ChatList = () => {
         title="G-ja"
         subtitle="What are you doing ?"
         date={new Date()}
-        muted={true}
-        showMute={true}
-        showVideoCall={true}
+        muted
+        showMute
+        showVideoCall
         unread={2}
         id={"1"}
         onClick={()=> onChatSelect('id')}

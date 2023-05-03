@@ -6,8 +6,9 @@ import UserService from "../../services/UserService";
 import {useEffect, useState} from "react";
 import UtilityService, {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
-import toast from "react-hot-toast";
 import {RouteNames} from "../../routes/routes";
+import {login} from "../../store/User";
+import {useDispatch} from "react-redux";
 
 const Login = () => {
   const {
@@ -19,32 +20,28 @@ const Login = () => {
 
   const [loading,setLoading] = useState(false);
   const [googleAuthUrl,setGoogleAuthUrl] = useState(null);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedIn = !!UtilityService.getAuthCookie();
 
   useEffect(() => {
-    if(loggedIn) navigate(RouteNames.Home, {replace: true})
+    //if(loggedIn) navigate(RouteNames.Home, {replace: true})
 
     UserService.getGoogleAuth()
         .then((response)=> setGoogleAuthUrl(response.url))
         .catch((error) => console.error(error));
   }, []);
 
-  const login = (payload: any) => {
-    setLoading(true);
-    UserService.login(payload)
-        .then(()=>{
-        toast.success('Login was successful')
-          navigate('/main/home')
-    })
-        .catch((e)=>{
-          toast.error(e.message)
-        })
-        .finally(() =>  setLoading(false))
-  }
-
   const submit = (payload: any) => {
-    login(payload);
+    setLoading(true);
+    dispatch(login(payload))
+        .then(({ type }: any) => {
+          if(type.split('/')[1] === 'fulfilled')
+            navigate("/main/home");
+        })
+        .finally(() => setLoading(false));
+
     reset();
   }
 

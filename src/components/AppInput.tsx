@@ -17,6 +17,7 @@ interface IAppInput {
   onChange: any;
   type?: string;
   maxLength?: number;
+  placeholder?:string;
 }
 
 const AppInput = React.forwardRef(

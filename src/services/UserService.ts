@@ -1,10 +1,13 @@
 import ApiService from "./ApiService";
 import UtilityService, { setAuthCookie } from "./UtilityService";
 import axios from "axios";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
-const prepareUser = ({}) => {
-  //..get user data
-  return {};
+const setProfileData = (state: any, user: any) => {
+  for(const prop in user){
+    state[prop] = user[prop];
+  }
 };
 
 export const login = ({
@@ -18,42 +21,29 @@ export const login = ({
     ApiService.post("/login", { email, password })
       .then((response) => {
         const { token } = response.data;
-        //dispatch(setCustomerData(prepareCustomer(user))); set customer data
         setAuthCookie(token);
+        toast.success('Login was successful')
         resolve(response.data);
       })
       .catch((error) => {
-        // dispatch(setCustomerData({}));
+        toast.error(error.message)
         setAuthCookie("");
         reject(error);
-      });
+      })
   });
 
-export const getCustomerData = () =>
-  async (dispatch: any, currentCustomer = {}) => {
+export const getUserProfile = () => async () => {
     return new Promise((resolve, reject) => {
       const authCookie = UtilityService.getAuthCookie();
       if (!authCookie) {
-        //  dispatch(setCustomerData({}));
         reject();
         return;
       }
-      ApiService.get("/user", {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-          Expires: "0",
-        },
-      })
+      ApiService.get("/me")
         .then((response) => {
-          const user = prepareUser(response.data);
-          if (!UtilityService.areObjectsIdentical(currentCustomer, user)) {
-            //  dispatch(setCustomerData(customer));
-          }
-          resolve(user);
+          resolve(response);
         })
         .catch((error) => {
-          //dispatch(setCustomerData({}));
           reject(error);
         });
     });
@@ -62,23 +52,15 @@ export const getCustomerData = () =>
 export const logout = () => {
   return new Promise((resolve, reject) => {
     ApiService.post(`/logout`)
-      .then(() => {
+      .then((response) => {
         setTimeout(() => {
           setAuthCookie("");
-          // dispatch(setCustomerData({}));
         }, 100);
+        resolve(response);
       })
       .catch((error) => {
         reject(error);
       });
-  });
-};
-
-export const update = (payload: any) => {
-  return new Promise((resolve, reject) => {
-    ApiService.put(`/user`, payload)
-      .then((response) => resolve(response.data))
-      .catch((error) => reject(error));
   });
 };
 
@@ -103,22 +85,6 @@ export const resetPassword = ({
     confirmPassword,
   }).then((response) => response.data);
 
-export const updatePassword = (payload: any) => {
-  return new Promise((resolve, reject) => {
-    ApiService.post(`/user/update_password`, payload)
-      .then((response) => resolve(response.data))
-      .catch((error) => reject(error))
-  });
-};
-
-export const verifyLink = (token: string) => {
-  return new Promise((resolve, reject) => {
-    ApiService.get(`/user/verify_reset_password_token?token=${token}`)
-      .then((response) => resolve(response.data))
-      .catch((error) => reject(error));
-  });
-};
-
 export const confirmPassword = (token: string) => {
   return new Promise((resolve, reject) => {
     ApiService.get(`/verify?token=${token}`)
@@ -131,12 +97,12 @@ export const register = (payload: any) => {
   return new Promise((resolve, reject) => {
     ApiService.post(`/register`, payload)
       .then((response) => resolve(response))
-      .catch((error) => reject(error))
+      .catch((error) => reject(error));
   });
 };
 
 export const getGoogleAuth = () =>
-  ApiService.get(`/auth/google`).then((response) => response.data);
+    ApiService.get(`/auth/google`).then((response) => response.data);
 
 export const googleAuth = (code: string | null) =>
   axios.post("https://oauth2.googleapis.com/token", {
@@ -148,18 +114,46 @@ export const googleAuth = (code: string | null) =>
     grant_type: "authorization_code",
   });
 
+const store = {
+  login: {
+    pending: (state: any) => {
+      state.loading = true;
+    },
+    fulfilled: (state: any, { payload } : any) => {
+      setProfileData(state,payload.user);
+      state.loading = false;
+    },
+    rejected: (state: any) => {
+      state.loading = false;
+    },
+  },
+  getProfileData: {
+    fulfilled: (state: any, action: any) => {},
+    rejected: (state: any) => {
+      state.profile = {}
+    },
+  },
+  logout: {
+    fulfilled: () => {
+      Cookies.remove("Cookie");
+      window.open("/login", "_self");
+    },
+    rejected: () => {
+      Cookies.remove("Cokkie");
+      window.open("/login", "_self");
+    },
+  },
+};
+
 export default {
   login,
-  prepareUser,
-  getCustomerData,
+  getUserProfile,
   logout,
-  update,
   forgotPassword,
   resetPassword,
-  updatePassword,
-  verifyLink,
   confirmPassword,
   register,
   getGoogleAuth,
   googleAuth,
+  store,
 };
