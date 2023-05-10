@@ -6,8 +6,7 @@ import UserService from "../../services/UserService";
 import {useEffect, useState} from "react";
 import UtilityService, {emailRegex, passwordRegex} from "../../services/UtilityService";
 import {useNavigate} from "react-router-dom";
-import {RouteNames} from "../../routes/routes";
-import {login} from "../../store/User";
+import {getUserConvos, login} from "../../store/User";
 import {useDispatch} from "react-redux";
 
 const Login = () => {
@@ -36,12 +35,14 @@ const Login = () => {
   const submit = (payload: any) => {
     setLoading(true);
     dispatch(login(payload))
-        .then(({ type }: any) => {
-          if(type.split('/')[1] === 'fulfilled')
+        .then(({ type, payload }: any) => {
+          dispatch(getUserConvos(payload.user.id));
+          if(type.split('/')[1] === 'fulfilled'){
             navigate("/main/home");
+          }
+
         })
         .finally(() => setLoading(false));
-
     reset();
   }
 

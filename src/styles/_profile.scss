@@ -1,9 +1,13 @@
 .profile-card {
-  @apply flex flex-row items-center justify-around bg-white rounded shadow cursor-pointer p-2;
+  @apply flex flex-row items-center justify-around bg-white rounded shadow p-2;
   height: 5rem;
 }
 
 .profile-icon {
   @apply shadow;
   border: 2px solid;
+}
+
+.chat-screen {
+  height: 68vh;
 }

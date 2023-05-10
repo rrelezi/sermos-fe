@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { Avatar } from "react-chat-elements";
 import AppDropDown from "../AppDropDown";
 import { useNavigate } from "react-router-dom";
 import UserService from "../../services/UserService";
 import AppIcon from "../AppIcon";
 import toast from "react-hot-toast";
+import {useSelector} from "react-redux";
 
 const ProfileTab = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+
+  const dropdownRef = useRef(null) as any;
+
+
+  const { profilePhotoPath } = useSelector((state: any) => state.profile);
+
 
   const options = [
     {
@@ -20,10 +27,20 @@ const ProfileTab = () => {
       label: "Log Out",
     },
   ];
+
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            if (!dropdownRef?.current?.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+    }, [dropdownRef]);
+
   const onSelect = (element: any) => {
     switch (element.target.id) {
       case "profile":
-        navigate("/main/home/profile");
+          navigate("/main/home/profile");
         break;
       case "logOut":
         UserService.logout()
@@ -39,10 +56,10 @@ const ProfileTab = () => {
   };
 
   return (
-    <div className={"profile-card"} onClick={() => setIsOpen(!isOpen)}>
+    <div className={"profile-card"}>
       <div className={"flex flex-row items-center"}>
         <Avatar
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13Z'%3E%3C/path%3E%3C/svg%3E"
+          src={profilePhotoPath}
           size="xlarge"
           type="circle"
           className={"profile-icon"}
@@ -51,13 +68,19 @@ const ProfileTab = () => {
         <div className={"ml-4 text-lg font-medium"}>Profile</div>
       </div>
 
-      <AppDropDown
-        isOpen={isOpen}
-        options={options}
-        onSelect={onSelect}
-        className={"float-right"}
-      />
-      <AppIcon icon={"ri-more-2-line"} scale={1.5} />
+        <div className={'flex justify-center hover:bg-gray-300 hover:shadow-gray-200 rounded-md cursor-pointer px-2 py-1'}
+             onClick={() => setIsOpen(true)}
+             ref={dropdownRef}
+        >
+            <AppDropDown
+                isOpen={isOpen}
+                options={options}
+                onSelect={onSelect}
+                className={"float-right cursor-pointer"}
+            />
+            <AppIcon icon={"ri-more-2-line "} scale={1.5}  />
+        </div>
+
     </div>
   );
 };

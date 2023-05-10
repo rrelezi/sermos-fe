@@ -5,16 +5,19 @@ import RouterIndex from "./routes";
 import {Toaster} from "react-hot-toast";
 import {Provider} from "react-redux";
 
-import { store } from '../src/store/index'
+import {persistor, store} from '../src/store/index'
+import {PersistGate} from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <Provider store={store}>
-        <React.StrictMode>
-            <Toaster/>
-            <RouterIndex />
-        </React.StrictMode>
+        <PersistGate persistor={persistor}>
+            <React.StrictMode>
+                <Toaster/>
+                <RouterIndex />
+            </React.StrictMode>
+        </PersistGate>
     </Provider>
 
 );

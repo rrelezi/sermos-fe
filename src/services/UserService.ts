@@ -114,6 +114,22 @@ export const googleAuth = (code: string | null) =>
     grant_type: "authorization_code",
   });
 
+export const getUserConvos = (id: string) =>
+ new Promise((resolve, reject) => {
+  ApiService.get(`/conversations?id=${id}`)
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error));
+});
+
+export const getMessages = (payload: any) =>
+    new Promise((resolve, reject) => {
+      ApiService.get(`/message?${Object.keys(payload)
+          .map((key) => `${key}=${encodeURIComponent(payload[key])}`)
+          .join('&')}`)
+          .then((response) => resolve(response.data))
+          .catch((error) => reject(error));
+    });
+
 const store = {
   login: {
     pending: (state: any) => {
@@ -143,6 +159,14 @@ const store = {
       window.open("/login", "_self");
     },
   },
+  getUserConvos: {
+    fulfilled: (state: any, { payload } : any) => {
+      state.convos = payload;
+    },
+    rejected: (state: any) => {
+      state.profile = {}
+    },
+  }
 };
 
 export default {
@@ -155,5 +179,7 @@ export default {
   register,
   getGoogleAuth,
   googleAuth,
+  getUserConvos,
+  getMessages,
   store,
 };
