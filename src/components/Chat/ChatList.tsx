@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { ChatItem } from "react-chat-elements";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ const ChatList = () => {
   const [unseenCounts,setUnseen] = useState(convos.map(({ unseenCount } : any) => unseenCount))
 
 
-  if (convos)
+  if (!!convos)
     return (
       <div className={"flex-1 bg-white mt-2 rounded p-2"}>
         {convos.map(({ friend, lastMessage, unseenCount }: any, indx: number) => (

@@ -9,27 +9,25 @@ import AppInput from "../AppInput";
 import { useSelector } from "react-redux";
 import ChatService, { pusher } from "../../services/ChatService";
 import UserService from "../../services/UserService";
+import Pusher from "pusher-js";
 
 const ChatScreen = () => {
   const location = useLocation();
   const friendId = location.state.id;
   const navigate = useNavigate();
 
-  const [messageList, setMessageList] = useState(null);
+  const [messageList, setMessageList] = useState([]);
 
   const messageListRef = useRef(null);
 
   const { id, name } = useSelector((state) => state.profile);
-
-  const channel = pusher.subscribe(`sermo.${id}`);
-
 
   useEffect(() => {
     UserService.getMessages({
       id,
       friendId,
       page: 1,
-      pageSize: 15,
+      pageSize: 2000,
     }).then(({ data }) => {
       setMessageList(data);
     });
@@ -56,26 +54,24 @@ const ChatScreen = () => {
       id: id,
       friendId: friendId,
       text: e.message,
-    });
+    }).then((data) => {
+      const messages = messageList;
+      messages.push({...data, isMine: 1})
+      setMessageList(messages)
+    })
 
-    const messages = messageList;
-    const newMessage = {
-      id: id,
-      isMine: 1,
-      message_content: e.message,
-      sent_on: new Date(),
-      status: "sent",
-    };
-
-    messages.push(newMessage);
-    setMessageList(messages);
   };
 
+  const channel = pusher.subscribe(`sermo.${id}`);
+
+
   useEffect(()=>{
-    channel.bind("addMessage", (data) => {
-      console.log(data);
-    });
-  },[sendMessage])
+    channel.bind("addMessage", ({ message }) => {
+     const messages = messageList;
+     messages.push({...message,isMine: 0});
+     setMessageList(messages);
+    },{name: Pusher});
+  },[])
 
   //const test = useSelector(state => state.profile );
 
@@ -114,6 +110,7 @@ const ChatScreen = () => {
         <MessageList
           className="message-list chat-screen"
           toBottomHeight={"100%"}
+          lockable
           dataSource={getChatData(messageList)}
           referance={messageListRef}
         />

@@ -2,13 +2,11 @@ import Pusher from "pusher-js";
 import ApiService from "./ApiService";
 
 const env = process.env;
-export const sendMessage = (payload: any) => {
-        return new Promise((resolve, reject) => {
+export const sendMessage = (payload: any) =>
                 ApiService.post(`message`, payload)
-                    .then((response) => resolve(response))
-                    .catch((error) => reject(error));
-        });
-};
+                    .then((response) => response.data)
+                    .catch((error) => console.log(error));
+
 
 export const markAllSeen = (friendId: string) =>
     new Promise((resolve, reject) => {
