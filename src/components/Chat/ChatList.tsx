@@ -9,12 +9,13 @@ const ChatList = () => {
 
   const navigate = useNavigate();
 
-  const onChatSelect = (id: string) => {
-    ChatService.markAllSeen(id);
+  const onChatSelect = (friend: any) => {
+    ChatService.markAllSeen(friend.id);
 
     navigate(`/main/home/chat`, {
       state: {
-        id: id,
+        friendId: friend.id,
+        friendName: friend.name
       },
     });
   };
@@ -22,7 +23,7 @@ const ChatList = () => {
   const [unseenCounts,setUnseen] = useState(convos.map(({ unseenCount } : any) => unseenCount))
 
 
-  if (!!convos)
+  if (!!convos && convos.length > 0)
     return (
       <div className={"flex-1 bg-white mt-2 rounded p-2"}>
         {convos.map(({ friend, lastMessage, unseenCount }: any, indx: number) => (
@@ -36,7 +37,7 @@ const ChatList = () => {
             unread={!lastMessage.isMine ? unseenCounts[indx] : 0}
             id={friend.id}
             onClick={() => {
-                onChatSelect(friend.id)
+                onChatSelect(friend)
                 const newUnseen = unseenCounts;
                 newUnseen[indx] = 0;
                 setUnseen(newUnseen)

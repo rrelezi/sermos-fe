@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import AppInput from "../AppInput";
 import { useForm } from "react-hook-form";
 import AppButton from "../AppButton";
@@ -19,6 +19,11 @@ const Login = () => {
 
   const [loading,setLoading] = useState(false);
   const [googleAuthUrl,setGoogleAuthUrl] = useState(null);
+  const [loginData, setLoginData] = useState({
+    user: {
+      id: null
+    }
+  });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,11 +41,10 @@ const Login = () => {
     setLoading(true);
     dispatch(login(payload))
         .then(({ type, payload }: any) => {
-          dispatch(getUserConvos(payload.user.id));
+          if(!!payload && payload.user)dispatch(getUserConvos(payload.user.id))
           if(type.split('/')[1] === 'fulfilled'){
             navigate("/main/home");
           }
-
         })
         .finally(() => setLoading(false));
     reset();

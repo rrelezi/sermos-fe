@@ -13,8 +13,7 @@ const ProfileTab = () => {
 
   const dropdownRef = useRef(null) as any;
 
-
-  const { profilePhotoPath } = useSelector((state: any) => state.profile);
+  const { name ,profilePhotoPath } = useSelector((state: any) => state.profile);
 
 
   const options = [
@@ -65,7 +64,7 @@ const ProfileTab = () => {
           className={"profile-icon"}
         />
 
-        <div className={"ml-4 text-lg font-medium"}>Profile</div>
+        <div className={"ml-4 text-lg font-medium"}>{name}</div>
       </div>
 
         <div className={'flex justify-center hover:bg-gray-300 hover:shadow-gray-200 rounded-md cursor-pointer px-2 py-1'}
