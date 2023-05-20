@@ -28,6 +28,7 @@ const ChatList = () => {
       <div className={"flex-1 bg-white mt-2 rounded p-2"}>
         {convos.map(({ friend, lastMessage, unseenCount }: any, indx: number) => (
           <ChatItem
+              key={indx}
             avatar={friend.avatar}
             alt="friend"
             title={friend.name}
