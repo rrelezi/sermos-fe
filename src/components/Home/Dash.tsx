@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 const Dash = () => {
   return (
     <AppLayout>
-      <div className={"flex-1 flex flex-row"}>
+      <div className={"flex-1 flex flex-row overflow-x-auto"}>
         <DashPanel />
         <Outlet />
       </div>

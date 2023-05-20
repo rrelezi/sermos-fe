@@ -21,6 +21,11 @@ export const getUserProfile = createAsyncThunk("getCustomerData", async () => {
   return UserService.getUserProfile();
 });
 
+export const setUserProfileBio = createAsyncThunk(
+  'setUserProfileBio',
+  async (bio: string) => await UserService.setUserProfileBio(bio)
+) as any;
+
 const slice = createSlice({
   name: "profile",
   initialState: {},
@@ -37,6 +42,11 @@ const slice = createSlice({
     builder.addCase(
       getUserProfile.rejected,
       UserService.store.getProfileData.rejected
+    );
+
+    builder.addCase(
+      setUserProfileBio.fulfilled,
+      UserService.store.setUserProfileBio.fulfilled
     );
 
     builder.addCase(

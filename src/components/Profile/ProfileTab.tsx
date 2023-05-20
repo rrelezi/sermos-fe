@@ -6,14 +6,17 @@ import UserService from "../../services/UserService";
 import AppIcon from "../AppIcon";
 import toast from "react-hot-toast";
 import {useSelector} from "react-redux";
+import SearchUserDialog from '../Search/SearchUserDialog';
 
 const ProfileTab = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchUserDialogOpen, setIsSearchUserDialogOpen] = useState(false);
 
   const dropdownRef = useRef(null) as any;
 
-  const { name ,profilePhotoPath } = useSelector((state: any) => state.profile);
+
+  const profile = useSelector((state: any) => state.profile);
 
 
   const options = [
@@ -58,28 +61,36 @@ const ProfileTab = () => {
     <div className={"profile-card"}>
       <div className={"flex flex-row items-center"}>
         <Avatar
-          src={profilePhotoPath}
+          src={profile.profilePhotoPath}
           size="xlarge"
           type="circle"
           className={"profile-icon"}
         />
 
-        <div className={"ml-4 text-lg font-medium"}>{name}</div>
+        <div className={"ml-4 text-lg font-medium"}>{profile.name}</div>
       </div>
 
-        <div className={'flex justify-center hover:bg-gray-300 hover:shadow-gray-200 rounded-md cursor-pointer px-2 py-1'}
-             onClick={() => setIsOpen(true)}
-             ref={dropdownRef}
-        >
-            <AppDropDown
-                isOpen={isOpen}
-                options={options}
-                onSelect={onSelect}
-                className={"float-right cursor-pointer"}
-            />
-            <AppIcon icon={"ri-more-2-line "} scale={1.5}  />
-        </div>
+      <span className='flex items-center'>
+          <div className={'flex justify-center hover:bg-gray-300 hover:shadow-gray-200 rounded-md cursor-pointer px-2 py-1 mr-2'}
+              onClick={setIsSearchUserDialogOpen.bind(null, true)}
+          >
+              <AppIcon icon={"ri-search-line"} scale={1.5}  />
+          </div>
 
+          <div className={'flex justify-center hover:bg-gray-300 hover:shadow-gray-200 rounded-md cursor-pointer px-2 py-1'}
+              onClick={() => setIsOpen(true)}
+              ref={dropdownRef}
+          >
+              <AppDropDown
+                  isOpen={isOpen}
+                  options={options}
+                  onSelect={onSelect}
+                  className={"float-right cursor-pointer"}
+              />
+              <AppIcon icon={"ri-more-2-line "} scale={1.5}  />
+          </div>
+      </span>
+      {isSearchUserDialogOpen ? <SearchUserDialog onClose={setIsSearchUserDialogOpen.bind(null, false)} /> : null}
     </div>
   );
 };
