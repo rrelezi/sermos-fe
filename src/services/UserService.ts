@@ -52,6 +52,21 @@ export const login = ({ email, password }: { email: string; password: string }) 
         reject(error);
       });
   });
+export const exchangeToken = (token: string) =>
+    new Promise((resolve, reject) => {
+      ApiService.get(`/auth/googleCallback?token=${token}`)
+          .then((response) => {
+            const { token } = response.data;
+            setAuthCookie(token);
+            toast.success('Login was successful');
+            resolve(response.data);
+          })
+          .catch((error) => {
+            toast.error(error.message);
+            setAuthCookie('');
+            reject(error);
+          });
+    });
 
 export const getUserProfile = () => async () => {
   return new Promise((resolve, reject) => {
@@ -207,6 +222,8 @@ export const getUserConvos = (id: string) =>
       .catch((error) => reject(error));
   });
 
+
+
 export const getMessages = (payload: any) =>
   new Promise((resolve, reject) => {
     ApiService.get(
@@ -284,5 +301,6 @@ export default {
   googleAuth,
   getUserConvos,
   getMessages,
+  exchangeToken,
   store
 };
