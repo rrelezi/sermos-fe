@@ -20,7 +20,7 @@ const ChatList = () => {
     });
   };
 
-  const [unseenCounts,setUnseen] = useState(convos.map(({ unseenCount } : any) => unseenCount))
+  const [unseenCounts,setUnseen] = useState(convos.map(({ unseenCount } : any) => unseenCount != undefined ? unseenCount : 0))
 
 
   if (!!convos && convos.length > 0)
@@ -32,10 +32,10 @@ const ChatList = () => {
             avatar={friend.avatar}
             alt="friend"
             title={friend.name}
-            subtitle={lastMessage.message_content}
-            date={new Date(lastMessage.sent_on)}
-            statusText={lastMessage.status}
-            unread={!lastMessage.isMine ? unseenCounts[indx] : 0}
+            subtitle={lastMessage != null ? lastMessage.message_content : "new conversation"}
+            date={lastMessage != null ? new Date(lastMessage.sent_on) : new Date()}
+            statusText={lastMessage != null ? lastMessage.status : ''}
+            unread={unseenCount}
             id={friend.id}
             onClick={() => {
                 onChatSelect(friend)
