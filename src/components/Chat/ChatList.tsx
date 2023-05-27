@@ -10,7 +10,7 @@ const ChatList = () => {
   const navigate = useNavigate();
 
   const onChatSelect = (friend: any) => {
-    ChatService.markAllSeen(friend.id);
+    //ChatService.markAllSeen(friend.id);
 
     navigate(`/main/home/chat`, {
       state: {
